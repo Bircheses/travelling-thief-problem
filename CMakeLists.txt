@@ -7,5 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(Instance)
 
-add_executable(TTP main.cpp)
+add_executable(TTP main.cpp
+    random_algorithm.cpp)
 target_link_libraries(TTP PRIVATE Instance)
