@@ -1,31 +1,13 @@
 #pragma once
 
+#include "City.hpp"
+#include "Item.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
 
 namespace instance{
-
-class City 
-{
-public:
-    City(uint32_t id, uint32_t x, uint32_t y) : id(id), x(x), y(y) {}
-private:
-    uint32_t id;
-    uint32_t x;
-    uint32_t y;
-};
-
-class Item
-{
-public:
-    Item(uint32_t id, uint32_t profit, uint32_t weight, uint32_t assigned_city_id) : id(id), profit(profit), weight(weight), assigned_city_id(assigned_city_id) {}
-private:
-    uint32_t id;
-    uint32_t profit;
-    uint32_t weight;
-    uint32_t assigned_city_id;
-};
 
 class Instance
 {
