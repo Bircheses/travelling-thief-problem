@@ -1,0 +1,8 @@
+{
+    "pop_size": 100,
+    "generations": 10,
+    "crossover_rate": 0.8,
+    "mutation_rate": 0.1,
+    "selection_method": "tournament",
+    "tour_builder": "random"
+}

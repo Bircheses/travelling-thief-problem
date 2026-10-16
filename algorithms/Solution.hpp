@@ -16,7 +16,7 @@ struct Solution {
         double profit = 0.0;
         std::vector<double> weight_at(n, 0.0);
 
-        for(size_t i = 0; i < n; i++) {
+        for(size_t i = 0; i < inst.items.size(); i++) {
             if (!backpack[i]) continue;
             profit += inst.items[i].profit;
             weight_at[inst.items[i].assigned_city_id] += inst.items[i].weight;

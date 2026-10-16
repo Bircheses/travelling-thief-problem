@@ -1,4 +1,5 @@
-#include "Instance.hpp"
+#include <Instance.hpp>
+#include <Utils.hpp>
 
 #include <vector>
 #include <cstdint>
@@ -6,13 +7,13 @@
 #include <chrono>
 #include <algorithm>
 #include <iostream>
-#include <numeric>
 
 #pragma once
 
 class TourBuilder {
 public:
-    virtual std::vector<uint32_t> build(const instance::Instance& inst) = 0;
+    virtual Tour build(const instance::Instance& inst) = 0;
+    virtual std::vector<Tour> build(const instance::Instance& inst, uint32_t amount) = 0;
 };
 
 class BackpackBuilder {
@@ -26,20 +27,30 @@ private:
 public:    
     RandomTourBuilder(unsigned seed) : rng(seed) {};
 
-    std::vector<uint32_t> build(const instance::Instance& inst) override
+    Tour build(const instance::Instance& inst) override
     {
-        std::vector<uint32_t> tour(inst.dimension);
+        Tour tour(inst.dimension);
         std::iota(tour.begin(), tour.end(), 0);
         std::shuffle(tour.begin() + 1, tour.end(), rng);
         return tour;
+    }
+    
+    std::vector<Tour> build(const instance::Instance& inst, uint32_t amount)
+    {
+        std::vector<Tour> tours;
+        tours.reserve(amount);
+        for (uint32_t i = 0; i < amount; ++i) {
+            tours.push_back(build(inst));
+        }
+        return tours;
     }
 };
 
 class GreedyTourBuilder : public TourBuilder {
 public:
-    std::vector<uint32_t> build(const instance::Instance& inst) override
+    Tour build(const instance::Instance& inst) override
     {
-        std::vector<uint32_t> tour(inst.dimension);
+        Tour tour(inst.dimension);
         std::vector<uint32_t> unvisited(inst.dimension);
         std::vector<bool> visited(inst.dimension, false);
 
@@ -63,6 +74,16 @@ public:
         }
 
         return tour;
+    }
+
+    std::vector<Tour> build(const instance::Instance& inst, uint32_t amount) override
+    {
+        std::vector<Tour> tours;
+        tours.reserve(amount);
+        for (uint32_t i = 0; i < amount; ++i) {
+            tours.push_back(build(inst));
+        }
+        return tours;
     }
 };
 

@@ -1,6 +1,7 @@
 #include "Instance.hpp"
 #include "algorithms/Builders.hpp"
 #include "algorithms/Solution.hpp"
+#include "ConfigReader.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -16,10 +17,10 @@ int main(int argc, char* argv[]) {
 
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
     std::cout << "Seed: " << seed << '\n';
-    RandomTourBuilder tour_builder(seed);
+    Config config = Config::load("../config.json");
+    std::cout << "Tour builder: " << config.tour_builder << '\n';
 
     Solution solution;
-    solution.tour = GreedyTourBuilder().build(inst);
     solution.backpack = GreedyBackpackBuilder().build(inst);
     solution.evaluate(inst);
 
