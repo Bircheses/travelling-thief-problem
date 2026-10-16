@@ -2,6 +2,24 @@
 
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
+std::vector<std::vector<double>> create_distance_matrix(std::vector<instance::City>& cities) {
+    const size_t n = cities.size();
+    std::vector<std::vector<double>> distance_matrix(n, std::vector<double>(n, 0.0));
+
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            if (i != j) {
+                double dx = cities[i].x - cities[j].x;
+                double dy = cities[i].y - cities[j].y;
+                distance_matrix[i][j] = std::ceil(std::sqrt(dx * dx + dy * dy));
+            }
+        }
+    }
+
+    return distance_matrix;
+}
 
 void instance::Instance::load(std::string filename)
 {
@@ -36,8 +54,9 @@ void instance::Instance::load(std::string filename)
     std::getline(file, line); // Skip the "NODE_COORD_SECTION" line
 
     cities.reserve(dimension);
-    for (uint32_t i = 0; i < dimension; i++) {
-        uint32_t id, x, y;
+    for (size_t i = 0; i < dimension; i++) {
+        uint32_t id; 
+        float x, y;
         file >> id >> x >> y;
         cities.emplace_back(id, x, y);
     }
@@ -51,6 +70,8 @@ void instance::Instance::load(std::string filename)
         file >> id >> profit >> weight >> assigned_city_id;
         items.emplace_back(id, profit, weight, assigned_city_id);
     }
+
+    distance_matrix = create_distance_matrix(cities);
 }
 
 std::string instance::Instance::to_string() const

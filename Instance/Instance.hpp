@@ -27,6 +27,8 @@ public:
     std::vector<City> cities;
     std::vector<Item> items;
 
+    std::vector<std::vector<double>> distance_matrix;
+
     void load(std::string filename);
     std::string to_string() const;
 };
