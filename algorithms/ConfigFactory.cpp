@@ -23,8 +23,8 @@ std::unique_ptr<Selection> ConfigFactory::make_selection()
 {
     switch (config.selection_method) {
         case SelectionMethod::TOURNAMENT: return std::make_unique<TournamentSelection>(config, seeder());
-        case SelectionMethod::ROULETTE:   return std::make_unique<RouletteSelection>(config, seeder());
-        case SelectionMethod::ELITIST:    return std::make_unique<ElitistSelection>(config, seeder());
+        case SelectionMethod::ROULETTE: return std::make_unique<RouletteSelection>(config, seeder());
+        case SelectionMethod::ELITIST: return std::make_unique<ElitistSelection>(config, seeder());
     }
     throw std::invalid_argument("Unknown selection method: " + to_string(config.selection_method));
 }
@@ -32,9 +32,9 @@ std::unique_ptr<Selection> ConfigFactory::make_selection()
 std::unique_ptr<Crossover> ConfigFactory::make_crossover()
 {
     switch (config.crossover_method) {
-        case CrossoverMethod::ORDERED:          return std::make_unique<OrderedCrossover>(seeder());
+        case CrossoverMethod::ORDERED: return std::make_unique<OrderedCrossover>(seeder());
         case CrossoverMethod::PARTIALLY_MAPPED: return std::make_unique<PartiallyMappedCrossover>(seeder());
-        case CrossoverMethod::CYCLE:            return std::make_unique<CycleCrossover>(seeder());
+        case CrossoverMethod::CYCLE: return std::make_unique<CycleCrossover>(seeder());
     }
     throw std::invalid_argument("Unknown crossover method: " + to_string(config.crossover_method));
 }
@@ -42,7 +42,7 @@ std::unique_ptr<Crossover> ConfigFactory::make_crossover()
 std::unique_ptr<Mutation> ConfigFactory::make_mutation()
 {
     switch (config.mutation_method) {
-        case MutationMethod::SWAP:      return std::make_unique<SwapMutation>(seeder());
+        case MutationMethod::SWAP: return std::make_unique<SwapMutation>(seeder());
         case MutationMethod::INVERSION: return std::make_unique<InversionMutation>(seeder());
     }
     throw std::invalid_argument("Unknown mutation method: " + to_string(config.mutation_method));

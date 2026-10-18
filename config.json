@@ -1,12 +1,12 @@
 {
     "pop_size": 100,
-    "generations": 10,
-    "crossover_rate": 0.8,
+    "generations": 100,
+    "crossover_rate": 0.7,
     "mutation_rate": 0.1,
     "selection_method": "tournament",
     "tournament_size": 5,
     "elite_size": 5,
-    "tour_builder": "random",
+    "tour_builder": "greedy",
     "backpack_builder": "greedy",
     "crossover_method": "ordered",
     "mutation_method": "swap"
