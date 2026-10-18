@@ -2,28 +2,28 @@
 
 #include <string>
 
-enum TourBuilderMethod {
+enum class TourBuilderMethod {
     RANDOM,
     GREEDY
 };
 
-enum BackpackBuilderMethod {
+enum class BackpackBuilderMethod {
     GREEDY
 };
 
-enum SelectionMethod {
+enum class SelectionMethod {
     TOURNAMENT,
     ROULETTE,
     ELITIST
 };
 
-enum CrossoverMethod {
+enum class CrossoverMethod {
     ORDERED,
     PARTIALLY_MAPPED,
     CYCLE
 };
 
-enum MutationMethod {
+enum class MutationMethod {
     SWAP,
     INVERSION
 };

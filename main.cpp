@@ -16,12 +16,7 @@ int main(int argc, char* argv[]) {
     inst.load(argv[1]);
 
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-    std::cout << "Seed: " << seed << '\n';
     Config config = Config::load("../config.json");
-    std::cout << "Tour builder: " << to_string(config.tour_builder)
-              << ", selection: " << to_string(config.selection_method)
-              << ", crossover: " << to_string(config.crossover_method)
-              << ", mutation: " << to_string(config.mutation_method) << '\n';
 
     algorithm::GeneticAlgorithm ga(config, seed);
     Solution best = ga.run(inst);
