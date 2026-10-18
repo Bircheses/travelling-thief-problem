@@ -11,10 +11,10 @@
 
 class ConfigFactory {
     const Config& config;
-    std::mt19937 seeder;
+    std::mt19937 rng;
 
 public:
-    ConfigFactory(const Config& config, unsigned seed) : config(config), seeder(seed) {}
+    ConfigFactory(const Config& config, unsigned seed) : config(config), rng(seed) {}
 
     std::unique_ptr<TourBuilder> make_tour_builder();
     std::unique_ptr<BackpackBuilder> make_backpack_builder();

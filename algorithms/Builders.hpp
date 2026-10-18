@@ -49,7 +49,19 @@ public:
 };
 
 class GreedyTourBuilder : public TourBuilder {
+private:
+    std::mt19937 rng;
+    
+    Tour build_random(const instance::Instance& inst)
+    {
+        Tour tour(inst.dimension);
+        std::iota(tour.begin(), tour.end(), 0);
+        std::shuffle(tour.begin() + 1, tour.end(), rng);
+        return tour;
+    }
 public:
+    GreedyTourBuilder(unsigned seed) : rng(seed) {};
+
     Tour build(const instance::Instance& inst) override
     {
         Tour tour(inst.dimension);
@@ -82,8 +94,9 @@ public:
     {
         std::vector<Tour> tours;
         tours.reserve(amount);
-        for (uint32_t i = 0; i < amount; ++i) {
-            tours.push_back(build(inst));
+        tours.push_back(build(inst));
+        for (uint32_t i = 0; i < amount - 1; ++i) {
+            tours.push_back(build_random(inst));
         }
         return tours;
     }

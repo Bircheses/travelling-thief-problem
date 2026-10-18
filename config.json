@@ -6,7 +6,7 @@
     "selection_method": "tournament",
     "tournament_size": 5,
     "elite_size": 5,
-    "tour_builder": "greedy",
+    "tour_builder": "random",
     "backpack_builder": "greedy",
     "crossover_method": "ordered",
     "mutation_method": "swap"
