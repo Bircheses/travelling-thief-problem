@@ -1,11 +1,8 @@
 add_library(Algorithms STATIC
-    Builders.hpp
-    Solution.hpp
     GeneticAlgorithm.cpp
-    Operators.hpp
-    Utils.hpp
+    ConfigFactory.cpp
 )
 
-target_link_libraries(Algorithms PUBLIC Instance ConfigReader)
+target_link_libraries(Algorithms PUBLIC Core Selection Crossover Mutation)
 
 target_include_directories(Algorithms PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

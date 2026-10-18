@@ -1,7 +1,7 @@
 #include "Instance.hpp"
-#include "algorithms/Builders.hpp"
-#include "algorithms/Solution.hpp"
+#include "Solution.hpp"
 #include "ConfigReader.hpp"
+#include "GeneticAlgorithm.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -18,23 +18,25 @@ int main(int argc, char* argv[]) {
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
     std::cout << "Seed: " << seed << '\n';
     Config config = Config::load("../config.json");
-    std::cout << "Tour builder: " << config.tour_builder << '\n';
+    std::cout << "Tour builder: " << to_string(config.tour_builder)
+              << ", selection: " << to_string(config.selection_method)
+              << ", crossover: " << to_string(config.crossover_method)
+              << ", mutation: " << to_string(config.mutation_method) << '\n';
 
-    Solution solution;
-    solution.backpack = GreedyBackpackBuilder().build(inst);
-    solution.evaluate(inst);
+    algorithm::GeneticAlgorithm ga(config, seed);
+    Solution best = ga.run(inst);
 
     std::cout << "Tour: ";
-    for (const auto& city : solution.tour) {
+    for (const auto& city : best.tour) {
         std::cout << city << " ";
     }
     std::cout << std::endl;
     std::cout << "Backpack: ";
-    for (const auto& item : solution.backpack) {
+    for (const auto& item : best.backpack) {
         std::cout << item << " ";
     }
     std::cout << std::endl;
-    std::cout << "Fitness: " << solution.fitness << std::endl;
+    std::cout << "Fitness: " << best.fitness << std::endl;
 
     return 0;
 }

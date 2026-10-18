@@ -4,17 +4,14 @@ project(TTP LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_library(ConfigReader STATIC
-    ConfigReader.cpp
-    ConfigReader.hpp
-)
-target_include_directories(ConfigReader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(Instance)
-add_subdirectory(Algorithms)
+add_subdirectory(core)
+add_subdirectory(selection)
+add_subdirectory(algorithms)
+add_subdirectory(crossover)
+add_subdirectory(mutation)
 
-add_executable(TTP main.cpp
-    ConfigReader.cpp
-    ConfigReader.hpp)
-target_link_libraries(TTP PRIVATE Instance Algorithms ConfigReader)
+add_executable(TTP main.cpp)
+target_link_libraries(TTP PRIVATE Algorithms)

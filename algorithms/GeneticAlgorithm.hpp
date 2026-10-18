@@ -1,21 +1,36 @@
-#include "Instance.hpp"
-#include "Builders.hpp"
-#include "ConfigReader.hpp"
-#include "Solution.hpp"
+#include <Instance.hpp>
+#include <Builders.hpp>
+#include <ConfigReader.hpp>
+#include <ConfigFactory.hpp>
+#include <Solution.hpp>
+#include <Selection.hpp>
+#include <Mutation.hpp>
+#include <Crossover.hpp>
+
+#include <memory>
+#include <random>
 
 #pragma once
 
 namespace algorithm {
 
 class GeneticAlgorithm {
-    TourBuilder& tour_builder;
-    BackpackBuilder& backpack_builder;
+private:
+    const Config& config;
+    std::mt19937 rng;
+    std::unique_ptr<TourBuilder> tour_builder;
+    std::unique_ptr<BackpackBuilder> backpack_builder;
+    std::unique_ptr<Selection> selection_operator;
+    std::unique_ptr<Mutation> mutation_operator;
+    std::unique_ptr<Crossover> crossover_operator;
+
+    Solution make_solution(const instance::Instance& inst, const Tour& tour);
 
 public:
-    GeneticAlgorithm(TourBuilder& tour_builder, BackpackBuilder& backpack_builder)
-        : tour_builder(tour_builder), backpack_builder(backpack_builder) {}
-    void run(const instance::Instance& instance, const Config& config);
-    std::vector<Solution> initalize_population(const instance::Instance& instance, const uint32_t pop_size);
+    GeneticAlgorithm(const Config& config, unsigned seed);
+
+    Solution run(const instance::Instance& inst);
+    std::vector<Solution> init_population(const instance::Instance& inst, const uint32_t pop_size);
 };
 
 }

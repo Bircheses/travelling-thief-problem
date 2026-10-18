@@ -12,12 +12,14 @@
 
 class TourBuilder {
 public:
+    virtual ~TourBuilder() = default;
     virtual Tour build(const instance::Instance& inst) = 0;
     virtual std::vector<Tour> build(const instance::Instance& inst, uint32_t amount) = 0;
 };
 
 class BackpackBuilder {
 public:
+    virtual ~BackpackBuilder() = default;
     virtual std::vector<bool> build(const instance::Instance& inst) = 0;
 };
 

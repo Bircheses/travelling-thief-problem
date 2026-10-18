@@ -1,21 +1,21 @@
 #include <Solution.hpp>
 #include <Utils.hpp>
-
-namespace selection {
-
-Solution tournament(const std::vector<Solution>& population, uint32_t tournament_size) {
+#include <ConfigReader.hpp>
     
-};
 
-Solution roulette(const std::vector<Solution>& population) {
+// Solution tournament(const std::vector<Solution>& population, uint32_t tournament_size) {
     
-};
+// };
 
-Solution elitist(const std::vector<Solution>& population, uint32_t elite_size) {
+// Solution roulette(const std::vector<Solution>& population) {
     
-};
+// };
 
-} // namespace selection
+// Solution elitist(const std::vector<Solution>& population, uint32_t elite_size) {
+    
+// };
+
+// } // namespace selection
 
 
 namespace crossover {

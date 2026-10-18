@@ -4,5 +4,10 @@
     "crossover_rate": 0.8,
     "mutation_rate": 0.1,
     "selection_method": "tournament",
-    "tour_builder": "random"
+    "tournament_size": 5,
+    "elite_size": 5,
+    "tour_builder": "random",
+    "backpack_builder": "greedy",
+    "crossover_method": "ordered",
+    "mutation_method": "swap"
 }
