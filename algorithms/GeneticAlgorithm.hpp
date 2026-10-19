@@ -6,6 +6,7 @@
 #include <Selection.hpp>
 #include <Mutation.hpp>
 #include <Crossover.hpp>
+#include <Writer.hpp>
 
 #include <memory>
 #include <random>
@@ -17,6 +18,7 @@ namespace algorithm {
 class GeneticAlgorithm {
 private:
     const Config& config;
+    CSVWriter writer;
     std::mt19937 rng;
     std::unique_ptr<TourBuilder> tour_builder;
     std::unique_ptr<BackpackBuilder> backpack_builder;
@@ -27,7 +29,7 @@ private:
     Solution make_solution(const instance::Instance& inst, const Tour& tour);
 
 public:
-    GeneticAlgorithm(const Config& config, unsigned seed);
+    GeneticAlgorithm(const Config& config, CSVWriter writer, unsigned seed);
 
     Solution run(const instance::Instance& inst);
     std::vector<Solution> init_population(const instance::Instance& inst, const uint32_t pop_size);

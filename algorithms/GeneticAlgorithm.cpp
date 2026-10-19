@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <iostream>
 
-algorithm::GeneticAlgorithm::GeneticAlgorithm(const Config& config, unsigned seed)
-    : config(config), rng(seed)
+algorithm::GeneticAlgorithm::GeneticAlgorithm(const Config& config, CSVWriter writer, unsigned seed)
+    : config(config), writer(writer), rng(seed)
 {
     ConfigFactory factory(config, rng());
     tour_builder = factory.make_tour_builder();
@@ -64,12 +64,9 @@ Solution algorithm::GeneticAlgorithm::run(const instance::Instance& inst) {
         population.swap(new_population);
         new_population.clear();
 
-        const auto best = std::max_element(population.begin(), population.end());
-        const auto worst = std::min_element(population.begin(), population.end());
-        if (*best > best_ever) best_ever = *best;
-
-        std::cout << "Generation " << gen + 1 << ": Best fitness = " << best->fitness << ", Worst fitness = " << worst->fitness << std::endl;
+        writer.append(GenerationData(gen + 1, population));
     }
 
+    writer.write_to_file("results.csv");
     return best_ever;
 }

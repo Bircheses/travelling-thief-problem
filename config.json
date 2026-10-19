@@ -1,6 +1,6 @@
 {
     "pop_size": 100,
-    "generations": 500,
+    "generations": 100,
     "crossover_rate": 0.7,
     "mutation_rate": 0.1,
     "selection_method": "tournament",

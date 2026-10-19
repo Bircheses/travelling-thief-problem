@@ -2,6 +2,7 @@
 #include "Solution.hpp"
 #include "ConfigReader.hpp"
 #include "GeneticAlgorithm.hpp"
+#include "Writer.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -17,21 +18,10 @@ int main(int argc, char* argv[]) {
 
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
     Config config = Config::load("../config.json");
+    CSVWriter writer = CSVWriter();
 
-    algorithm::GeneticAlgorithm ga(config, seed);
+    algorithm::GeneticAlgorithm ga(config, writer, seed);
     Solution best = ga.run(inst);
-
-    std::cout << "Tour: ";
-    for (const auto& city : best.tour) {
-        std::cout << city << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "Backpack: ";
-    for (const auto& item : best.backpack) {
-        std::cout << item << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "Fitness: " << best.fitness << std::endl;
 
     return 0;
 }
