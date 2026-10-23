@@ -2,10 +2,11 @@
 #include <Utils.hpp>
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 
 algorithm::GeneticAlgorithm::GeneticAlgorithm(const Config& config, CSVWriter writer, unsigned seed)
-    : config(config), writer(writer), rng(seed)
+    : config(config), writer(std::move(writer)), rng(seed)
 {
     ConfigFactory factory(config, rng());
     tour_builder = factory.make_tour_builder();
@@ -15,9 +16,9 @@ algorithm::GeneticAlgorithm::GeneticAlgorithm(const Config& config, CSVWriter wr
     crossover_operator = factory.make_crossover();
 }
 
-Solution algorithm::GeneticAlgorithm::make_solution(const instance::Instance& inst, const Tour& tour) {
+Solution algorithm::GeneticAlgorithm::make_solution(const instance::Instance& inst, const Tour tour) {
     Solution solution;
-    solution.tour = tour;
+    solution.tour = std::move(tour);
     solution.backpack = backpack_builder->build(inst);
     solution.evaluate(inst);
     return solution;
@@ -34,39 +35,67 @@ std::vector<Solution> algorithm::GeneticAlgorithm::init_population(const instanc
     return population;
 }
 
-Solution algorithm::GeneticAlgorithm::run(const instance::Instance& inst) {
+double algorithm::GeneticAlgorithm::run(const instance::Instance& inst) {
     const uint32_t pop_size = config.pop_size;
     const uint32_t generations = config.generations;
     std::uniform_real_distribution<> chance(0.0, 1.0);
 
     std::vector<Solution> population = init_population(inst, pop_size);
-    Solution best_ever = *std::max_element(population.begin(), population.end());
-
+    double best_fitness = std::max_element(population.begin(), population.end())->fitness;
+    uint32_t stagnation_counter = 0;
     std::vector<Solution> new_population;
     new_population.reserve(pop_size);
 
     for (size_t gen = 0; gen < generations; gen++) {
+        if (config.elitarism) {
+            size_t elite_size = config.elite_size;
+            std::partial_sort(population.begin(), population.begin() + elite_size, population.end(), std::greater<>{});
+            new_population.insert(new_population.end(), population.begin(), population.begin() + elite_size);
+        }
+
         while (new_population.size() < pop_size) {
             const Solution& parent1 = selection_operator->select(population);
             const Solution& parent2 = selection_operator->select(population);
 
-            Tour child = chance(rng) < config.crossover_rate
-                ? crossover_operator->crossover(parent1.tour, parent2.tour)
-                : parent1.tour;
+            const bool crossed = chance(rng) < config.crossover_rate;
+            const bool mutated = chance(rng) < config.mutation_rate;
 
-            if (chance(rng) < config.mutation_rate) {
+            if (!crossed && !mutated) {
+                new_population.push_back(parent1);
+                continue;
+            }
+
+            Tour child = parent1.tour;
+
+            if (crossed)
+            {
+                child = crossover_operator->crossover(parent1.tour, parent2.tour);
+            }
+
+            if (mutated)
+            {
                 mutation_operator->mutate(child);
             }
 
-            new_population.push_back(make_solution(inst, child));
+            new_population.push_back(make_solution(inst, std::move(child)));
         }
 
         population.swap(new_population);
         new_population.clear();
 
-        writer.append(GenerationData(gen + 1, population));
+        GenerationData gen_data(gen + 1, population);
+        writer.append(gen_data);
+
+        if (!config.stagnation) stagnation_counter = 0;
+
+        if (gen_data.best > best_fitness) {
+            best_fitness = gen_data.best;
+            stagnation_counter = 0;
+        } else if (config.max_stagnation > 0 && ++stagnation_counter >= config.max_stagnation) {
+            break;
+        }  
     }
 
-    writer.write_to_file("results.csv");
-    return best_ever;
+    writer.write();
+    return best_fitness;
 }

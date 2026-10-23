@@ -28,18 +28,29 @@ enum class MutationMethod {
     INVERSION
 };
 
+enum class MutationType {
+    GENE,
+    INDIVIDUAL
+};
+
 struct Config {
-    unsigned pop_size = 100;
-    unsigned generations = 10;
-    double crossover_rate = 0.8;
-    double mutation_rate = 0.1;
+    Config() = default;
+
+    unsigned pop_size = 300;
+    unsigned generations = 600;
+    double crossover_rate = 0.75;
+    double mutation_rate = 0.25;
     SelectionMethod selection_method = SelectionMethod::TOURNAMENT;
     unsigned tournament_size = 5;
-    unsigned elite_size = 5;
-    TourBuilderMethod tour_builder = TourBuilderMethod::RANDOM;
+    bool elitarism = true;
+    unsigned elite_size = 2;
+    TourBuilderMethod tour_builder = TourBuilderMethod::GREEDY;
     BackpackBuilderMethod backpack_builder = BackpackBuilderMethod::GREEDY;
     CrossoverMethod crossover_method = CrossoverMethod::ORDERED;
-    MutationMethod mutation_method = MutationMethod::SWAP;
+    MutationMethod mutation_method = MutationMethod::INVERSION;
+    MutationType mutation_type = MutationType::GENE;
+    bool stagnation = false;
+    unsigned max_stagnation = 30;
 
     static Config load(const std::string& filename);
 };

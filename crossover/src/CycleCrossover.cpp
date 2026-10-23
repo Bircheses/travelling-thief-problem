@@ -1,5 +1,7 @@
 #include <Crossover.hpp>
 
-Tour CycleCrossover::crossover(const Tour& parent1, const Tour& parent2) {
+#include <stdexcept>
 
+Tour CycleCrossover::crossover(const Tour& parent1, const Tour& parent2) {
+    throw std::logic_error("CycleCrossover not implemented");
 }

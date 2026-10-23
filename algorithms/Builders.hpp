@@ -7,6 +7,7 @@
 #include <chrono>
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 
 #pragma once
 

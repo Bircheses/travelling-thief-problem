@@ -14,4 +14,5 @@ add_subdirectory(crossover)
 add_subdirectory(mutation)
 
 add_executable(TTP main.cpp)
-target_link_libraries(TTP PRIVATE Algorithms)
+find_package(Threads REQUIRED)
+target_link_libraries(TTP PRIVATE Algorithms Threads::Threads)

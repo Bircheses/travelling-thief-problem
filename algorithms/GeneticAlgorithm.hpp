@@ -26,12 +26,12 @@ private:
     std::unique_ptr<Mutation> mutation_operator;
     std::unique_ptr<Crossover> crossover_operator;
 
-    Solution make_solution(const instance::Instance& inst, const Tour& tour);
+    Solution make_solution(const instance::Instance& inst, const Tour tour);
 
 public:
     GeneticAlgorithm(const Config& config, CSVWriter writer, unsigned seed);
 
-    Solution run(const instance::Instance& inst);
+    double run(const instance::Instance& inst);
     std::vector<Solution> init_population(const instance::Instance& inst, const uint32_t pop_size);
 };
 

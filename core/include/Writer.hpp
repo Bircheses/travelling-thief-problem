@@ -1,6 +1,7 @@
 #include <Solution.hpp>
 
 #include <fstream>
+#include <filesystem>
 #include <vector>
 #include <algorithm>
 
@@ -32,17 +33,21 @@ public:
 
 class CSVWriter {
 private:
+    std::filesystem::path path;
     std::vector<GenerationData> buffer;
 public:
+    explicit CSVWriter(const std::filesystem::path& path) : path(std::move(path)) {}
+
     void append(GenerationData data) {
         buffer.push_back(data);
     }
 
-    void write_to_file(const std::string& filename) {
-        std::ofstream file("../output/" + filename);
-    
-        if (!file.is_open()) {
-            throw std::runtime_error("Could not open file for writing: " + filename);
+    void write() const {
+        std::filesystem::create_directories(path.parent_path());
+        std::ofstream file(path);
+        
+        if (!file) {
+            throw std::runtime_error("Could not open file for writing: " + path.string());
         }
 
         file << "Generation,Best,Average,Worst" << std::endl;
