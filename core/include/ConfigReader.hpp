@@ -55,6 +55,21 @@ struct Config {
     static Config load(const std::string& filename);
 };
 
+struct SAConfig {
+    SAConfig() = default;
+
+    unsigned pop_size = 300;
+    double initial_temperature = 100.0;
+    double final_temperature = 0.1;
+    double cooling_rate = 0.95;
+    unsigned iterations_per_temperature = 100;
+
+    TourBuilderMethod tour_builder = TourBuilderMethod::GREEDY;
+    BackpackBuilderMethod backpack_builder = BackpackBuilderMethod::GREEDY;
+    MutationMethod mutation_method = MutationMethod::INVERSION;
+    MutationType mutation_type = MutationType::GENE;
+};
+
 std::string to_string(TourBuilderMethod method);
 std::string to_string(BackpackBuilderMethod method);
 std::string to_string(SelectionMethod method);

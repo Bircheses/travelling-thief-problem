@@ -1,0 +1,34 @@
+#include <Instance.hpp>
+#include <Builders.hpp>
+#include <ConfigReader.hpp>
+#include <ConfigFactory.hpp>
+#include <Solution.hpp>
+#include <Mutation.hpp>
+#include <Writer.hpp>
+
+#include <memory>
+#include <random>
+
+#pragma once
+
+namespace algorithm {
+
+class SimulatedAnnealing {
+private:
+    const SAConfig& config;
+    CSVWriter writer;
+    std::mt19937 rng;
+    std::unique_ptr<TourBuilder> tour_builder;
+    std::unique_ptr<BackpackBuilder> backpack_builder;
+    std::unique_ptr<Mutation> mutation_operator;
+
+    Solution make_solution(const instance::Instance& inst, const Tour tour);
+
+public:
+    SimulatedAnnealing(const SAConfig& config, CSVWriter writer, unsigned seed);
+
+    double run(const instance::Instance& inst);
+    std::vector<Solution> init_population(const instance::Instance& inst, const uint32_t pop_size);
+};
+
+}
