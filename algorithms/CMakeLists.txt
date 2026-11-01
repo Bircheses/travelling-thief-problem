@@ -1,6 +1,7 @@
 add_library(Algorithms STATIC
     GeneticAlgorithm.cpp
     ConfigFactory.cpp
+    SimulatedAnnealing.cpp
 )
 
 target_link_libraries(Algorithms PUBLIC Core Selection Crossover Mutation)

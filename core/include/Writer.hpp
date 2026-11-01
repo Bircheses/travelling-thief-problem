@@ -29,6 +29,8 @@ public:
         average = total_fitness / population.size();
     }
     
+    GenerationData(uint32_t gen, double best, double average, double worst)
+        : generation(gen), best(best), average(average), worst(worst) {}
 };
 
 class CSVWriter {

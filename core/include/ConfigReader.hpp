@@ -36,10 +36,10 @@ enum class MutationType {
 struct Config {
     Config() = default;
 
-    unsigned pop_size = 300;
-    unsigned generations = 600;
-    double crossover_rate = 0.75;
-    double mutation_rate = 0.25;
+    unsigned pop_size = 250;
+    unsigned generations = 1000;
+    double crossover_rate = 0.8;
+    double mutation_rate = 0.3;
     SelectionMethod selection_method = SelectionMethod::TOURNAMENT;
     unsigned tournament_size = 5;
     bool elitarism = true;

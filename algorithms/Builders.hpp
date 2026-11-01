@@ -34,7 +34,7 @@ public:
     {
         Tour tour(inst.dimension);
         std::iota(tour.begin(), tour.end(), 0);
-        std::shuffle(tour.begin() + 1, tour.end(), rng);
+        std::shuffle(tour.begin(), tour.end(), rng);
         return tour;
     }
     
@@ -57,23 +57,20 @@ private:
     {
         Tour tour(inst.dimension);
         std::iota(tour.begin(), tour.end(), 0);
-        std::shuffle(tour.begin() + 1, tour.end(), rng);
+        std::shuffle(tour.begin(), tour.end(), rng);
         return tour;
     }
 public:
     GreedyTourBuilder(unsigned seed) : rng(seed) {};
 
-    Tour build(const instance::Instance& inst) override
+    Tour build_from(const instance::Instance& inst, uint32_t start_city)
     {
         Tour tour(inst.dimension);
         std::vector<uint32_t> unvisited(inst.dimension);
-        std::vector<bool> visited(inst.dimension, false);
-
         std::iota(unvisited.begin(), unvisited.end(), 0);
 
-        uint32_t closest_city = 0;
+        uint32_t closest_city = start_city;
         tour[0] = closest_city;
-        visited[closest_city] = true;
         unvisited.erase(std::remove(unvisited.begin(), unvisited.end(), closest_city), unvisited.end());
 
         for (size_t i = 1; i < inst.dimension; i++) {
@@ -83,12 +80,16 @@ public:
 
             closest_city = *nearest_city;
             tour[i] = closest_city;
-            visited[closest_city] = true;
-
-            unvisited.erase(std::remove(unvisited.begin(), unvisited.end(), closest_city), unvisited.end());
+            unvisited.erase(nearest_city);
         }
 
         return tour;
+    }
+
+    Tour build(const instance::Instance& inst) override
+    {
+        uint32_t start = std::uniform_int_distribution<uint32_t>(0, inst.dimension - 1)(rng);
+        return build_from(inst, start);
     }
 
     std::vector<Tour> build(const instance::Instance& inst, uint32_t amount) override

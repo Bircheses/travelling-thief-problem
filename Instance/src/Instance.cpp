@@ -68,7 +68,7 @@ void instance::Instance::load(std::string filename)
     for (uint32_t i = 0; i < number_of_items; i++) {
         uint32_t id, profit, weight, assigned_city_id;
         file >> id >> profit >> weight >> assigned_city_id;
-        items.emplace_back(id, profit, weight, assigned_city_id);
+        items.emplace_back(id, profit, weight, assigned_city_id - 1);
     }
 
     distance_matrix = create_distance_matrix(cities);
